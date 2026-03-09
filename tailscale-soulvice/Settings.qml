@@ -36,9 +36,12 @@ ColumnLayout {
         pluginApi.saveSettings();
     }
 
-    NComboBox {
+    NLabel {
         label: pluginApi.tr("bar.widget-settings.tailscale.display-mode.label")
         description: pluginApi.tr("bar.widget-settings.tailscale.display-mode.description")
+    }
+
+    NComboBox {
         minimumWidth: 134
         model: [
             { "key": "onhover", "name": pluginApi.tr("options.display-mode.on-hover") },
@@ -52,6 +55,11 @@ ColumnLayout {
         }
     }
 
+    NLabel {
+        label: pluginApi.tr("bar.widget-settings.tailscale.show-exit-node.label")
+        description: pluginApi.tr("bar.widget-settings.tailscale.show-exit-node.description")  
+    }
+
     NToggle {
         label: pluginApi.tr("bar.widget-settings.tailscale.show-exit-node.label")
         description: pluginApi.tr("bar.widget-settings.tailscale.show-exit-node.description")
@@ -62,9 +70,13 @@ ColumnLayout {
         }
     }
 
-    NToggle {
+    NLabel {
         label: pluginApi.tr("bar.widget-settings.tailscale.show-status-dot.label")
-        description: pluginApi.tr("bar.widget-settings.tailscale.show-status-dot.description")
+        description: pluginApi.tr("bar.widget-settings.tailscale.show-status-dot.description")    
+    }
+
+    NToggle {
+        
         checked: root.valueShowStatusDot
         onToggled: checked => {
             root.valueShowStatusDot = checked;
@@ -72,13 +84,16 @@ ColumnLayout {
         }
     }
 
+    NLabel {
+        label: pluginApi?.tr("settings.refresh-interval") || "Refresh Interval"
+        description: (pluginApi?.tr("settings.refresh-interval-desc") || "How often to check Tailscale status") + " (" + root.editRefreshInterval + " ms)"
+    }
+
     NSlider {
-        label: pluginApi.tr("bar.widget-settings.tailscale.refreshInterval.label")
-        description: pluginApi.tr("bar.widget-settings.tailscale.refreshInterval.description")
         value: root.valueRefreshInterval
-        min: 5
-        max: 300
-        step: 5
+        from: 5
+        to: 300
+        stepSize: 5
         onValueChanged: val => {
             root.valueRefreshInterval = val;
             saveSettings();
