@@ -88,7 +88,7 @@ Item {
       } else if (action === "toggle-shields") {
         backend.setShieldsUp(!backend.shieldsUp);
       } else if (action === "widget-settings") {
-        BarService.openWidgetSettings(screen, section, sectionWidgetIndex, widgetId, widgetSettings);
+        BarService.openPluginSettings(root.screen, pluginApi.manifest);
       }
     }
   }
