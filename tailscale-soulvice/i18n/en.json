@@ -39,6 +39,8 @@
             "loading": "Loading...",
             "no-devices": "No Devices",
             "refresh": "Refresh",
+            "favorite": "Favorite",
+            "unfavorite": "Unfavorite",
             "shields-up": {
                 "label": "Shields Up",
                 "description": "Protect Device from all Tailscale connections."
@@ -91,7 +93,7 @@
                     "label": "Show Status Dot",
                     "description": "Show the Status Dot."
                 },
-                "refreshInterval": {
+                "refresh-interval": {
                     "label": "Refresh Interval",
                     "description": "How often to poll Tailscale Status."
                 }

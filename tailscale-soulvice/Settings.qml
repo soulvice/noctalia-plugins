@@ -36,12 +36,9 @@ ColumnLayout {
         pluginApi.saveSettings();
     }
 
-    NLabel {
+    NComboBox {
         label: pluginApi.tr("bar.widget-settings.tailscale.display-mode.label")
         description: pluginApi.tr("bar.widget-settings.tailscale.display-mode.description")
-    }
-
-    NComboBox {
         minimumWidth: 134
         model: [
             { "key": "onhover", "name": pluginApi.tr("options.display-mode.on-hover") },
@@ -55,11 +52,6 @@ ColumnLayout {
         }
     }
 
-    NLabel {
-        label: pluginApi.tr("bar.widget-settings.tailscale.show-exit-node.label")
-        description: pluginApi.tr("bar.widget-settings.tailscale.show-exit-node.description")  
-    }
-
     NToggle {
         label: pluginApi.tr("bar.widget-settings.tailscale.show-exit-node.label")
         description: pluginApi.tr("bar.widget-settings.tailscale.show-exit-node.description")
@@ -70,13 +62,9 @@ ColumnLayout {
         }
     }
 
-    NLabel {
-        label: pluginApi.tr("bar.widget-settings.tailscale.show-status-dot.label")
-        description: pluginApi.tr("bar.widget-settings.tailscale.show-status-dot.description")    
-    }
-
     NToggle {
-        
+        label: pluginApi.tr("bar.widget-settings.tailscale.show-status-dot.label")
+        description: pluginApi.tr("bar.widget-settings.tailscale.show-status-dot.description")
         checked: root.valueShowStatusDot
         onToggled: checked => {
             root.valueShowStatusDot = checked;
@@ -85,8 +73,8 @@ ColumnLayout {
     }
 
     NLabel {
-        label: pluginApi?.tr("settings.refresh-interval") || "Refresh Interval"
-        description: (pluginApi?.tr("settings.refresh-interval-desc") || "How often to check Tailscale status") + " (" + root.editRefreshInterval + " ms)"
+        label: pluginApi?.tr("bar.widget-settings.tailscale.refresh-interval.label") || "Refresh Interval"
+        description: (pluginApi?.tr("bar.widget-settings.tailscale.refresh-interval.description") || "How often to check Tailscale status") + " (" + root.editRefreshInterval + " ms)"
     }
 
     NSlider {

@@ -4,7 +4,7 @@
         {
             "id": "tailscale-soulvice",
             "name": "Tailscale",
-            "version": "1.0.6",
+            "version": "1.0.7",
             "official": false,
             "author": "soulvice <soulvice@w0lf.io>",
             "description": "Tailscale connected device viewer and connection controls",

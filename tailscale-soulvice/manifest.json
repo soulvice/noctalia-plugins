@@ -1,7 +1,7 @@
 {
   "id": "tailscale-soulvice",
   "name": "Tailscale",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "minNoctaliaVersion": "4.0.0",
   "author": "soulvice <soulvice@w0lf.io>",
   "license": "MIT",
