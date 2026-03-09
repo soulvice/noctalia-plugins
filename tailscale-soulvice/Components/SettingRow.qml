@@ -18,7 +18,7 @@ Rectangle {
   Layout.fillWidth: true
   implicitHeight: contentRow.implicitHeight + Style.marginS * 2
   radius: Style.radiusS
-  color: mouseArea.containsMouse ? Qt.alpha(Color.mOnSurface, 0.05) : Color.transparent
+  color: mouseArea.containsMouse ? Qt.alpha(Color.mOnSurface, 0.05) : "transparent"
 
   Behavior on color {
     ColorAnimation { duration: Style.animationFast }

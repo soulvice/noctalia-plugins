@@ -156,7 +156,7 @@ NBox {
 
                 Rectangle {
                   visible: !modelData.online
-                  color: Color.transparent
+                  color: "transparent"
                   border.color: Color.mOutline
                   border.width: Style.borderS
                   radius: height * 0.5
@@ -190,7 +190,7 @@ NBox {
 
                 Rectangle {
                   visible: modelData.exitNodeOption && !modelData.exitNode && root.isExitNodeList
-                  color: Color.transparent
+                  color: "transparent"
                   border.color: Color.mOutline
                   border.width: Style.borderS
                   radius: height * 0.5

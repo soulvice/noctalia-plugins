@@ -68,8 +68,8 @@ Item {
       anchors.fill: parent
       color: Color.mSurface
       radius: Style.radiusL
-      border.color: Color.mOutline
-      border.width: Style.borderS
+      //border.color: Color.mOutline
+      //border.width: Style.borderS
       clip: true  
 
       ColumnLayout {
