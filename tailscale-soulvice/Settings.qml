@@ -79,7 +79,6 @@ ColumnLayout {
         min: 5
         max: 300
         step: 5
-        unit: "s"
         onValueChanged: val => {
             root.valueRefreshInterval = val;
             saveSettings();
