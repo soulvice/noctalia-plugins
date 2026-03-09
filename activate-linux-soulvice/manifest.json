@@ -5,7 +5,7 @@
   "minNoctaliaVersion": "4.0.0",
   "author": "soulvice <soulvice@w0lf.io>",
   "license": "MIT",
-  "repository": "https://github.com/noctalia-dev/noctalia-plugins",
+  "repository": "https://githhub.com/soulvice/noctalia-plugins",
   "description": "Comical Activate Linux text like the old windows version.",
   "entryPoints": {
     "desktopWidget": "DesktopWidget.qml",
