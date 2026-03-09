@@ -1,0 +1,33 @@
+{
+  "id": "tailscale-soulvice",
+  "name": "Tailscale Plugin",
+  "version": "1.0.3",
+  "minNoctaliaVersion": "4.0.0",
+  "author": "soulvice <soulvice@w0lf.io>",
+  "license": "MIT",
+  "repository": "https://github.com/noctalia-dev/noctalia-plugins",
+  "description": "Tailscale Bar Widget and Desktop Widget",
+  "entryPoints": {
+    "barWidget": "BarWidget.qml",
+    "settings": "Settings.qml",
+    "main": "Main.qml",
+    "panel": "Panel.qml"
+  },
+  "tags": [
+    "Bar",
+    "Network",
+    "Panel"
+  ],
+  "dependencies": {
+    "plugins": []
+  },
+  "metadata": {
+    "defaultSettings": {
+      "showBackground": false,
+      "displayMode": "onhover",
+      "showExitNode": true,
+      "showStatusDot": true,
+      "refreshInterval": 5000,
+      "pingCount": 5
+  }
+}

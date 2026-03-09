@@ -1,0 +1,110 @@
+{
+    "context-menu": {
+        "disable-tailscale": "Disable",
+        "enable-tailscale": "Enable",
+        "disconnect-exit-node": "Disconnect Exit Node",
+        "shields-down": "Shield Down",
+        "shields-up": "Shield Up",
+        "widget-settings": "Settings"
+    },
+    "tooltips": {
+        "tailscale-disconnected": "Disconnected",
+        "tailscale-exit-node": "Using Exit Node {node}",
+        "tailscale-connected": "Connected ({ip})",
+        "more-options": "Options",
+        "copy": "Copy",
+        "settings": "Settings",
+        "refresh": "Refresh",
+        "close": "Close"
+    },
+    
+    "tailscale": {
+        "title": "Tailscale",
+        "panel": {
+            "title": "Tailscale",
+            "online": "Online",
+            "active-exit-node": "Active Exit Node",
+            "exit-node": "Exit Node",
+            "exit-nodes": "Exit Nodes",
+            "use": "Use",
+            "ipv4": "IPv4",
+            "ipv6": "IPv6",
+            "dns-name": "DNS Name",
+            "connection": "Connection",
+            "direct": "Direct",
+            "relayed": "Relayed through {relay}",
+            "devices": "Devices",
+            "disconnect": "Disconnect",
+            "settings": "Settings",
+            "loading": "Loading...",
+            "no-devices": "No Devices",
+            "refresh": "Refresh",
+            "shields-up": {
+                "label": "Shields Up",
+                "description": "Protect Device from all Tailscale connections."
+            },
+            "accept-routes": {
+                "label": "Accept Routes",
+                "description": "Allow routes from local network to tailscale network."
+            },
+            "accept-dns": {
+                "label": "Accept DNS",
+                "description": "Allow DNS routes for tailscale network."
+            },
+            "allow-lan": {
+                "label": "Allow LAN",
+                "description": "Allow LAN access to Tailscale network."
+            },
+            "advertise-exit-node": {
+                "label": "Advertise Exit Node",
+                "description": "Advertise device as Exit Node for Tailscale network."
+            }
+
+        }
+    },
+    "toast": {
+        "tailscale": {
+            "started": "Tailscale Started",
+            "needsLogin": "Tailscale Needs Login",
+            "exitNodeSet": "Exit node set to {node}",
+            "exitNodeCleared": "Exit Node Cleared",
+            "shieldsUp": "Shield Up",
+            "shieldsDown": "Shield Down",
+            "advertisingExitNode": "Advertise as Exit Node",
+            "notAdvertisingExitNode": "Not advertising as Exit Node"
+        },
+        "copied": "copied"
+    },
+
+    "bar": {
+        "widget-settings": {
+            "tailscale": {
+                "display-mode": {
+                    "label": "Display Mode",
+                    "description": "Change the display mode of the bar widget."
+                },
+                "show-exit-node": {
+                    "label": "Show Exit Node",
+                    "description": "Show the Exit Node."
+                },
+                "show-status-dot": {
+                    "label": "Show Status Dot",
+                    "description": "Show the Status Dot."
+                },
+                "refreshInterval": {
+                    "label": "Refresh Interval",
+                    "description": "How often to poll Tailscale Status."
+                }
+            }
+        }
+    },
+
+    "options": {
+        "display-mode": {
+            "on-hover": "On Hover",
+            "always-show": "Always Show",
+            "always-hide": "Always Hide"
+        }
+    }
+
+}

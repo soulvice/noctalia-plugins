@@ -1,0 +1,12 @@
+{
+    "desktop_widget": {
+        "main": "Activate Linux",
+        "sub": "Go to Settings to activate"
+    },
+    "settings": {
+        "background_color": {
+            "label": "Background Color",
+            "description": "Background color of the todo widget"
+        }
+    }
+}

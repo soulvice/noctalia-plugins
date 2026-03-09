@@ -1,0 +1,36 @@
+{
+    "version": 1,
+    "plugins": [
+        {
+            "id": "tailscale-soulvice",
+            "name": "Tailscale",
+            "version": "1.0.3",
+            "official": false,
+            "author": "soulvice <soulvice@w0lf.io>",
+            "description": "Tailscale connected device viewer and connection controls",
+            "repository": "https://githhub.com/soulvice/noctalia-plugins",
+            "license": "MIT",
+            "tags": [
+                "Bar",
+                "Network",
+                "Panel"
+            ],
+            "lastUpdated": "2026-03-09T14:00:00+10:00"
+        },
+        {
+            "id": "activate-linux-soulvice",
+            "name": "Activate Linux",
+            "version": "1.0.1",
+            "official": false,
+            "author": "soulvice <soulvice@w0lf.io>",
+            "description": "Tailscale connected device viewer and connection controls",
+            "repository": "https://githhub.com/soulvice/noctalia-plugins",
+            "license": "MIT",
+            "tags": [
+                "Desktop",
+                "Fun"
+            ],
+            "lastUpdated": "2026-03-09T14:00:00+10:00"
+        }
+    ]
+}
