@@ -32,6 +32,7 @@ Item {
 
   implicitWidth: pill.width
   implicitHeight: pill.height
+  
 
   NPopupContextMenu {
     id: contextMenu
@@ -130,17 +131,12 @@ Item {
     forceClose: isBarVertical || root.displayMode === "alwaysHide" || (!backend.running && text === "")
 
     //onClicked: PanelService.getPanel("tailscalePanel", screen)?.toggle(this)
-    onClicked: pluginApi.openPanel(root.screen)
+    onClicked: pluginApi.openPanel(root.screen, this)
 
 
-    //onRightClicked: {
-    //  var popupMenuWindow = PanelService.getPopupMenuWindow(screen);
-    //  if (popupMenuWindow) {
-    //    popupMenuWindow.showContextMenu(contextMenu);
-    //    const pos = BarService.getContextMenuPosition(pill, contextMenu.implicitWidth, contextMenu.implicitHeight);
-    //    contextMenu.openAtItem(pill, pos.x, pos.y);
-    //  }
-    //}
+    onRightClicked: {
+      PanelService.showContextMenu(contextMenu, root, screen);
+    }
 
     tooltipText: {
       if (!backend.running) {
