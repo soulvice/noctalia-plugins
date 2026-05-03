@@ -32,6 +32,14 @@ Item {
   readonly property bool showExitNode: widgetSettings.showExitNode !== undefined ? widgetSettings.showExitNode : true
   readonly property bool showStatusDot: widgetSettings.showStatusDot !== undefined ? widgetSettings.showStatusDot : true
 
+  readonly property real contentWidth: {
+    if ((mainInstance?.compactMode ?? false) || !(mainInstance?.tailscaleRunning ?? false)) {
+      return Style.capsuleHeight
+    }
+    return contentRow.implicitWidth + Style.marginM * 2
+  }
+  readonly property real contentHeight: Style.capsuleHeight
+
   implicitWidth: pill.width
   implicitHeight: pill.height
 
