@@ -26,7 +26,7 @@ Item {
   readonly property bool isBarVertical: Settings.data.bar.position === "left" || Settings.data.bar.position === "right"
   
   readonly property real contentWidth: {
-    if ((backend?.compactMode ?? false) || !(backend?.tailscaleRunning ?? false)) {
+    if ((backend?.compactMode ?? false) || !(backend?.connected ?? false)) {
       return Style.capsuleHeight
     }
     return contentRow.implicitWidth + Style.marginM * 2
