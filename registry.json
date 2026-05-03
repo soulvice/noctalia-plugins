@@ -20,7 +20,7 @@
     {
       "id": "tailscale-soulvice",
       "name": "Tailscale",
-      "version": "1.0.8",
+      "version": "1.0.9",
       "official": false,
       "author": "soulvice <soulvice@w0lf.io>",
       "description": "Tailscale Bar Widget and Desktop Widget",
@@ -32,7 +32,7 @@
         "Network",
         "Panel"
       ],
-      "lastUpdated": "2026-05-03T14:18:54+10:00"
+      "lastUpdated": "2026-05-03T14:23:06+10:00"
     }
   ]
 }
