@@ -64,7 +64,7 @@ Item {
         applyUiScale: false
         crossed: !(backend?.connected ?? false)
         color: {
-          if (backend?.connected ?? false) return Color.mOnPrimary;
+          if (backend?.connected ?? false) return Color.mOnSurface;
           return mouseArea.containsMouse ? Color.mOnHover : Color.mOnSurface
         }
         opacity: 1.0
