@@ -12,33 +12,34 @@ Item {
   id: root
 
   property var pluginApi: null
-  property var backend: pluginApi?.mainInstance
-  readonly property bool pillDirection: BarService.getPillDirection(root)
-
   property ShellScreen screen
-
-  // Widget properties passed from Bar.qml for per-instance settings
+/ / Widget properties passed from Bar.qml for per-instance settings
   property string widgetId: ""
   property string section: ""
   property int sectionWidgetIndex: -1
   property int sectionWidgetsCount: 0
 
-  property var widgetSettings: {
-    return pluginApi?.pluginSettings ? pluginApi?.pluginSettings : (pluginApi?.manfest?.metadata?.defaultSettings ? pluginApi?.manfest?.metadata?.defaultSettings : {})
-  }
-
+  readonly property bool pillDirection: BarService.getPillDirection(root)
+  
+  property var backend: pluginApi?.mainInstance
+  
   readonly property bool isBarVertical: Settings.data.bar.position === "left" || Settings.data.bar.position === "right"
-  readonly property string displayMode: widgetSettings.displayMode !== undefined ? widgetSettings.displayMode : "onhover"
-  readonly property bool showExitNode: widgetSettings.showExitNode !== undefined ? widgetSettings.showExitNode : true
-  readonly property bool showStatusDot: widgetSettings.showStatusDot !== undefined ? widgetSettings.showStatusDot : true
-
+  
   readonly property real contentWidth: {
-    if ((mainInstance?.compactMode ?? false) || !(mainInstance?.tailscaleRunning ?? false)) {
+    if ((backend?.compactMode ?? false) || !(backend?.tailscaleRunning ?? false)) {
       return Style.capsuleHeight
     }
     return contentRow.implicitWidth + Style.marginM * 2
   }
   readonly property real contentHeight: Style.capsuleHeight
+  
+  // Extra variables
+  property var widgetSettings: {
+    return pluginApi?.pluginSettings ? pluginApi?.pluginSettings : (pluginApi?.manfest?.metadata?.defaultSettings ? pluginApi?.manfest?.metadata?.defaultSettings : {})
+  }
+  readonly property string displayMode: widgetSettings.displayMode !== undefined ? widgetSettings.displayMode : "onhover"
+  readonly property bool showExitNode: widgetSettings.showExitNode !== undefined ? widgetSettings.showExitNode : true
+  readonly property bool showStatusDot: widgetSettings.showStatusDot !== undefined ? widgetSettings.showStatusDot : true
 
   implicitWidth: contentWidth
   implicitHeight: contentHeight
@@ -151,7 +152,7 @@ Item {
       } else if (action === "toggle-shields") {
         backend.setShieldsUp(!backend.shieldsUp);
       } else if (action === "widget-settings") {
-        BarService.openPluginSettings(root.screen, pluginApi.manifest);
+        BarService.openPluginSettings(screen, pluginApi.manifest);
       }
     }
   }
@@ -172,18 +173,5 @@ Item {
         PanelService.showContextMenu(contextMenu, root, screen)
       }
     }
-  }
-
-  // Subtle indicator for shields up or exit node active
-  Rectangle {
-    visible: root.showStatusDot && backend.running && (backend.shieldsUp || backend.currentExitNode)
-    anchors.right: pill.right
-    anchors.top: pill.top
-    anchors.rightMargin: 4
-    anchors.topMargin: 4
-    width: 6
-    height: 6
-    radius: 3
-    color: backend.shieldsUp ? Color.mError : Color.mPrimary
   }
 }
