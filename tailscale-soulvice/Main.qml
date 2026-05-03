@@ -11,7 +11,7 @@ Item {
   property var pluginApi: null
 
   // Core state
-  property bool connect: false
+  property bool connected: false
   property bool loading: true
   property string backendState: "Unknown" // Running, Stopped, NeedsLogin, etc.
   property string lastError: ""
