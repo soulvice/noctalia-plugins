@@ -12,6 +12,7 @@ Item {
 
   property var pluginApi: null
   property var backend: pluginApi?.mainInstance
+  readonly property bool pillDirection: BarService.getPillDirection(root)
 
   property ShellScreen screen
 
@@ -32,6 +33,59 @@ Item {
 
   implicitWidth: pill.width
   implicitHeight: pill.height
+
+  Rectangle {
+    id: visualCapsule
+    x: Style.pixelAlignCenter(parent.width, width)
+    y: Style.pixelAlignCenter(parent.height, height)
+    width: root.contentWidth
+    height: root.contentHeight
+    color: mouseArea.containsMouse ? Color.mHover : Style.capsuleColor
+    radius: Style.radiusL
+
+    RowLayout {
+      id: contentRow
+      anchors.centerIn: parent
+      spacing: Style.marginS
+      layoutDirection: Qt.LeftToRight
+
+      TailscaleIcon {
+        pointSize: Style.fontSizeL
+        applyUiScale: false
+        crossed: !(backend?.running ?? false)
+        color: {
+          if (backend?.running ?? false) return Color.mOnPrimary
+          return mouseArea.containsMouse ? Color.mOnHover : Color.mOnSurface
+        }
+        opacity: 1.0
+      }
+
+      // Show details when not in compact mode and there's something to show
+      ColumnLayout {
+        visible: !(backend?.compactMode ?? false) && (backend?.running ?? false) && ((backend?.showIpAddress ?? false) || (backend?.showPeerCount ?? false))
+        spacing: 2
+        Layout.leftMargin: Style.marginXS
+        Layout.rightMargin: Style.marginS
+
+        // IP Address
+        NText {
+          visible: (backend?.showIpAddress ?? false) && (backend?.tailscaleIp ?? false)
+          text: backend?.tailscaleIp || ""
+          pointSize: Style.fontSizeXS
+          color: mouseArea.containsMouse ? Color.mOnHover : Color.mOnSurface
+          font.family: Settings.data.ui.fontFixed
+        }
+
+        // Peer count
+        NText {
+          visible: backend?.showPeerCount ?? false
+          text: (backend?.peerCount || 0) + " " + pluginApi?.tr("panel.peers")
+          pointSize: Style.fontSizeXS
+          color: mouseArea.containsMouse ? Color.mOnHover : Color.mOnSurface
+        }
+      }
+    }
+  }
   
 
   NPopupContextMenu {
@@ -93,64 +147,21 @@ Item {
     }
   }
 
-  BarPill {
-    id: pill
+  MouseArea {
+    id: mouseArea
+    anchors.fill: parent
+    hoverEnabled: true
+    cursorShape: Qt.PointingHandCursor
+    acceptedButtons: Qt.LeftButton | Qt.RightButton
 
-    screen: root.screen
-    //density: Settings.data.bar.density
-    oppositeDirection: BarService.getPillDirection(root)
-
-    icon: {
-      if (backend.loading) {
-        return "loader-2";
+    onClicked: (mouse) => {
+      if (mouse.button === Qt.LeftButton) {
+        if (pluginApi) {
+          pluginApi.openPanel(root.screen, root)
+        }
+      } else if (mouse.button === Qt.RightButton) {
+        PanelService.showContextMenu(contextMenu, root, screen)
       }
-      if (!backend.running) {
-        return "world-off";
-      }
-      if (backend.shieldsUp) {
-        return "shield-lock";
-      }
-      if (backend.currentExitNode) {
-        return "shield-check";
-      }
-      return "world-check";
-    }
-
-    text: {
-      if (!backend.running) {
-        return "";
-      }
-      if (root.showExitNode && backend.currentExitNodeName) {
-        return backend.currentExitNodeName;
-      }
-      return "";
-    }
-
-    autoHide: false
-    forceOpen: !isBarVertical && root.displayMode === "alwaysShow"
-    forceClose: isBarVertical || root.displayMode === "alwaysHide" || (!backend.running && text === "")
-
-    //onClicked: PanelService.getPanel("tailscalePanel", screen)?.toggle(this)
-    onClicked: pluginApi.openPanel(root.screen, this)
-
-
-    onRightClicked: {
-      PanelService.showContextMenu(contextMenu, root, screen);
-    }
-
-    tooltipText: {
-      if (!backend.running) {
-        return pluginApi.tr("tooltips.tailscale-disconnected");
-      }
-      if (backend.currentExitNodeName) {
-        return pluginApi.tr("tooltips.tailscale-exit-node", { "node": backend.currentExitNodeName });
-      }
-      return pluginApi.tr("tooltips.tailscale-connected", { "ip": backend.selfIP });
-    }
-
-    // Show loading animation
-    Behavior on icon {
-      enabled: backend.loading
     }
   }
 
