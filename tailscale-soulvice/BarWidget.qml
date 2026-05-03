@@ -44,59 +44,76 @@ Item {
   implicitWidth: contentWidth
   implicitHeight: contentHeight
 
-  Rectangle {
-    id: visualCapsule
-    x: Style.pixelAlignCenter(parent.width, width)
-    y: Style.pixelAlignCenter(parent.height, height)
-    width: root.contentWidth
-    height: root.contentHeight
-    color: mouseArea.containsMouse ? Color.mHover : Style.capsuleColor
-    radius: Style.radiusL
+  MouseArea {
+    id: mouseArea
+    anchors.fill: parent
+    hoverEnabled: true
+    cursorShape: Qt.PointingHandCursor
+    acceptedButtons: Qt.LeftButton | Qt.RightButton
 
-    RowLayout {
-      id: contentRow
-      anchors.centerIn: parent
-      spacing: Style.marginS
-      layoutDirection: Qt.LeftToRight
+    Rectangle {
+      id: visualCapsule
+      x: Style.pixelAlignCenter(parent.width, width)
+      y: Style.pixelAlignCenter(parent.height, height)
+      width: root.contentWidth
+      height: root.contentHeight
+      color: mouseArea.containsMouse ? Color.mHover : Style.capsuleColor
+      radius: Style.radiusL
 
-      TailscaleIcon {
-        pointSize: Style.fontSizeL
-        applyUiScale: false
-        crossed: !(backend?.connected ?? false)
-        color: {
-          if (backend?.connected ?? false) return Color.mOnSurface;
-          return mouseArea.containsMouse ? Color.mOnHover : Color.mOnSurface
-        }
-        opacity: 1.0
-      }
+      RowLayout {
+        id: contentRow
+        anchors.centerIn: parent
+        spacing: Style.marginS
+        layoutDirection: Qt.LeftToRight
 
-      // Show details when not in compact mode and there's something to show
-      ColumnLayout {
-        visible: !(backend?.compactMode ?? false) && (backend?.connected ?? false) && ((backend?.showIpAddress ?? false) || (backend?.showPeerCount ?? false))
-        spacing: 2
-        Layout.leftMargin: Style.marginXS
-        Layout.rightMargin: Style.marginS
-
-        // IP Address
-        NText {
-          visible: (backend?.showIpAddress ?? false) && (backend?.tailscaleIp ?? false)
-          text: backend?.tailscaleIp || ""
-          pointSize: Style.fontSizeXS
-          color: mouseArea.containsMouse ? Color.mOnHover : Color.mOnSurface
-          font.family: Settings.data.ui.fontFixed
+        TailscaleIcon {
+          pointSize: Style.fontSizeL
+          applyUiScale: false
+          crossed: !(backend?.connected ?? false)
+          color: {
+            if (backend?.connected ?? false) return Color.mOnSurface;
+            return mouseArea.containsMouse ? Color.mOnHover : Color.mOnSurface
+          }
+          opacity: 1.0
         }
 
-        // Peer count
-        NText {
-          visible: backend?.showPeerCount ?? false
-          text: (backend?.peerCount || 0) + " " + pluginApi?.tr("panel.peers")
-          pointSize: Style.fontSizeXS
-          color: mouseArea.containsMouse ? Color.mOnHover : Color.mOnSurface
+        // Show details when not in compact mode and there's something to show
+        ColumnLayout {
+          visible: !(backend?.compactMode ?? false) && (backend?.connected ?? false) && ((backend?.showIpAddress ?? false) || (backend?.showPeerCount ?? false))
+          spacing: 2
+          Layout.leftMargin: Style.marginXS
+          Layout.rightMargin: Style.marginS
+
+          // IP Address
+          NText {
+            visible: (backend?.showIpAddress ?? false) && (backend?.tailscaleIp ?? false)
+            text: backend?.tailscaleIp || ""
+            pointSize: Style.fontSizeXS
+            color: mouseArea.containsMouse ? Color.mOnHover : Color.mOnSurface
+            font.family: Settings.data.ui.fontFixed
+          }
+
+          // Peer count
+          NText {
+            visible: backend?.showPeerCount ?? false
+            text: (backend?.peerCount || 0) + " " + pluginApi?.tr("panel.peers")
+            pointSize: Style.fontSizeXS
+            color: mouseArea.containsMouse ? Color.mOnHover : Color.mOnSurface
+          }
         }
       }
     }
+
+    onClicked: (mouse) => {
+      if (mouse.button === Qt.LeftButton) {
+        if (pluginApi) {
+          pluginApi.openPanel(root.screen, root)
+        }
+      } else if (mouse.button === Qt.RightButton) {
+        PanelService.showContextMenu(contextMenu, root, screen)
+      }
+    }
   }
-  
 
   NPopupContextMenu {
     id: contextMenu
@@ -153,24 +170,6 @@ Item {
         backend.setShieldsUp(!backend.shieldsUp);
       } else if (action === "widget-settings") {
         BarService.openPluginSettings(screen, pluginApi.manifest);
-      }
-    }
-  }
-
-  MouseArea {
-    id: mouseArea
-    anchors.fill: parent
-    hoverEnabled: true
-    cursorShape: Qt.PointingHandCursor
-    acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-    onClicked: (mouse) => {
-      if (mouse.button === Qt.LeftButton) {
-        if (pluginApi) {
-          pluginApi.openPanel(root.screen, root)
-        }
-      } else if (mouse.button === Qt.RightButton) {
-        PanelService.showContextMenu(contextMenu, root, screen)
       }
     }
   }
