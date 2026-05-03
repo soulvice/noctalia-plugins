@@ -11,7 +11,7 @@ Item {
   property var pluginApi: null
 
   // Core state
-  property bool running: false
+  property bool connect: false
   property bool loading: true
   property string backendState: "Unknown" // Running, Stopped, NeedsLogin, etc.
   property string lastError: ""
@@ -190,7 +190,7 @@ Item {
 
   function parseStatusData(data) {
     root.backendState = data.BackendState || "Unknown";
-    root.running = root.backendState === "Running";
+    root.connected = root.backendState === "Running";
 
     // Parse self node
     if (data.Self) {
@@ -285,7 +285,7 @@ Item {
   }
 
   function statusIcon() {
-    if (!root.running) return "world-off";
+    if (!root.connected) return "world-off";
     if (root.currentExitNode && root.currentExitNode !== "") return "shield-check";
     return "world-check";
   }
@@ -334,7 +334,7 @@ Item {
         if (text.trim()) {
           // Check for common states
           if (text.includes("not running")) {
-            root.running = false;
+            root.connected = false;
             root.backendState = "Stopped";
             root.devices = [];
             root.exitNodes = [];
@@ -393,7 +393,7 @@ Item {
     stdout: StdioCollector {
       onStreamFinished: {
         root.togglingTailscale = false;
-        root.running = false;
+        root.connected = false;
         root.currentExitNode = "";
         root.currentExitNodeName = "";
         Logger.i("Tailscale", "Stopped");

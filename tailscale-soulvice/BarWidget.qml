@@ -62,9 +62,9 @@ Item {
       TailscaleIcon {
         pointSize: Style.fontSizeL
         applyUiScale: false
-        crossed: !(backend?.running ?? false)
+        crossed: !(backend?.connected ?? false)
         color: {
-          if (backend?.running ?? false) return Color.mOnSurface
+          if (backend?.connected ?? false) return Color.mOnPrimary;
           return mouseArea.containsMouse ? Color.mOnHover : Color.mOnSurface
         }
         opacity: 1.0
@@ -72,7 +72,7 @@ Item {
 
       // Show details when not in compact mode and there's something to show
       ColumnLayout {
-        visible: !(backend?.compactMode ?? false) && (backend?.running ?? false) && ((backend?.showIpAddress ?? false) || (backend?.showPeerCount ?? false))
+        visible: !(backend?.compactMode ?? false) && (backend?.connected ?? false) && ((backend?.showIpAddress ?? false) || (backend?.showPeerCount ?? false))
         spacing: 2
         Layout.leftMargin: Style.marginXS
         Layout.rightMargin: Style.marginS
@@ -106,13 +106,13 @@ Item {
 
       // Toggle Tailscale
       items.push({
-        "label": backend.running ? pluginApi.tr("context-menu.disable-tailscale") : pluginApi.tr("context-menu.enable-tailscale"),
+        "label": backend.connected ? pluginApi.tr("context-menu.disable-tailscale") : pluginApi.tr("context-menu.enable-tailscale"),
         "action": "toggle-tailscale",
-        "icon": backend.running ? "world-off" : "world-check"
+        "icon": backend.connected ? "world-off" : "world-check"
       });
 
       // Exit node quick actions (only when running)
-      if (backend.running) {
+      if (backend.connected) {
         if (backend.currentExitNode) {
           items.push({
             "label": pluginApi.tr("context-menu.disconnect-exit-node"),

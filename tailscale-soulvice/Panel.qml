@@ -22,7 +22,7 @@ Item {
   property real headerHeight: headerRow.implicitHeight + Style.marginM * 2
   property real devicesHeight: devicesList.implicitHeight
   property real calculatedHeight: (devicesHeight !== 0) ? (headerHeight + devicesHeight + Style.marginL * 2 + Style.marginM) : (280 * Style.uiScaleRatio)
-  property real contentPreferredeight: backend.running && backend.devices.length > 0 ? Math.min(600, calculatedHeight) : Math.min(600, 280 * Style.uiScaleRatio)
+  property real contentPreferredeight: backend.connected && backend.devices.length > 0 ? Math.min(600, calculatedHeight) : Math.min(600, 280 * Style.uiScaleRatio)
 
 
   property string expandedDeviceId: ""
@@ -90,9 +90,9 @@ Item {
             spacing: Style.marginM
 
             NIcon {
-              icon: backend.running ? "world-check" : "world-off"
+              icon: backend.connected ? "world-check" : "world-off"
               pointSize: Style.fontSizeXXL
-              color: backend.running ? Color.mPrimary : Color.mOnSurfaceVariant
+              color: backend.connected ? Color.mPrimary : Color.mOnSurfaceVariant
             }
 
             ColumnLayout {
@@ -107,7 +107,7 @@ Item {
               }
 
               NText {
-                visible: backend.running && backend.selfIP
+                visible: backend.connected && backend.selfIP
                 text: backend.selfIP
                 pointSize: Style.fontSizeXS
                 color: Color.mOnSurfaceVariant
@@ -115,7 +115,7 @@ Item {
             }
 
             NToggle {
-              checked: backend.running
+              checked: backend.connected
               onToggled: checked => backend.toggle()
               baseSize: Style.baseWidgetSize * 0.65
               enabled: !backend.togglingTailscale
@@ -185,7 +185,7 @@ Item {
 
         // Current exit node banner
         Rectangle {
-          visible: backend.running && backend.currentExitNode !== ""
+          visible: backend.connected && backend.currentExitNode !== ""
           Layout.fillWidth: true
           Layout.preferredHeight: exitNodeRow.implicitHeight + (Style.marginM * 2)
           color: Qt.alpha(Color.mPrimary, 0.1)
@@ -235,7 +235,7 @@ Item {
 
         // Settings panel
         NBox {
-          visible: root.showSettings && backend.running
+          visible: root.showSettings && backend.connected
           Layout.fillWidth: true
           Layout.preferredHeight: settingsColumn.implicitHeight + Style.marginM * 2
 
@@ -302,7 +302,7 @@ Item {
 
         // Tailscale disabled state
         NBox {
-          visible: !backend.running && !backend.loading
+          visible: !backend.connected && !backend.loading
           Layout.fillWidth: true
           Layout.fillHeight: true
 
@@ -343,7 +343,7 @@ Item {
 
         // Loading state (show when loading and we haven't had devices yet)
         NBox {
-          visible: backend.running && backend.loading && !root.hasHadDevices
+          visible: backend.connected && backend.loading && !root.hasHadDevices
           Layout.fillWidth: true
           Layout.fillHeight: true
 
@@ -374,7 +374,7 @@ Item {
 
         // Empty state when no devices
         NBox {
-          visible: backend.running && !backend.loading && backend.devices.length === 0 && root.hasHadDevices
+          visible: backend.connected && !backend.loading && backend.devices.length === 0 && root.hasHadDevices
           Layout.fillWidth: true
           Layout.fillHeight: true
 
@@ -411,7 +411,7 @@ Item {
 
         // Devices list container (no NBox wrapper - matches WiFi panel)
         NScrollView {
-          visible: backend.running && backend.devices.length > 0
+          visible: backend.connected && backend.devices.length > 0
           Layout.fillWidth: true
           Layout.fillHeight: true
           horizontalPolicy: ScrollBar.AlwaysOff
