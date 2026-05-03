@@ -13,7 +13,7 @@ Item {
 
   property var pluginApi: null
   property ShellScreen screen
-/ / Widget properties passed from Bar.qml for per-instance settings
+  // Widget properties passed from Bar.qml for per-instance settings
   property string widgetId: ""
   property string section: ""
   property int sectionWidgetIndex: -1
