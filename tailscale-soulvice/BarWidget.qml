@@ -40,8 +40,8 @@ Item {
   }
   readonly property real contentHeight: Style.capsuleHeight
 
-  implicitWidth: pill.width
-  implicitHeight: pill.height
+  implicitWidth: contentWidth
+  implicitHeight: contentHeight
 
   Rectangle {
     id: visualCapsule
