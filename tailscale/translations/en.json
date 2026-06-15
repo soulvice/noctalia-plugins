@@ -1,0 +1,23 @@
+{
+  "tooltip": {
+    "ip_address": "IP Address",
+    "state": "State",
+    "exit_node": "Exit Node",
+    "hostname": "Hostname",
+    "peer_count": "Peer Count",
+    "state_unknown": "Tailscale State Unknown"
+  },
+  "bar": {
+    "login": "Login"
+  },
+  "toast": {
+    "down": "down",
+    "up": "up",
+    "disconnect": "Disconnecting...",
+    "connect": "Connecting...",
+    "need_login": "Opening Login Flow...",
+    "ip_cb": "IP Copied to Clipboard",
+    "connected": "Connected",
+    "disconnected": "Disconnected"
+  }
+}

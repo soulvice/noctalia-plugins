@@ -1,0 +1,56 @@
+
+
+id = "souvice/tailscale"
+name = "Tailscale"
+version = "1.0.0"
+min_noctalia = "5.0.0"
+author = "soulvice"
+license = "MIT"
+tags = ["tailscale" "network"]
+icon = "sheild"
+description = "A minimal Tailscale plugin that shows the current status of tailscale"
+
+[[shortcut]]
+id = "tailscale_shortcut"
+entry = "shortcut.luau"
+
+[[service]]
+id = "tailscale_service"
+entry = "service.luau"
+
+[[setting]]
+key = "poll_interval"
+type = "int"
+label = "Poll Interval (ms)"
+default = 5000
+min = 1000
+max = 10000
+description = "Refresh interval that tailscale status is called to update the status."
+
+[[setting]]
+key = "tailscale_bin"
+type = "file"
+default = "tailscale"
+label = "Tailscale Binary"
+description = "Location of the tailscale binary"
+
+[[widget]]
+id = "tailscale_bar"
+entry = "bar.luau"
+
+[[widget.setting]]
+key = "hide_when_disconnected"
+type = "bool"
+default = false
+label = "Hide When Disconnected"
+description = "Hide bar widget when tailscale is disconnected."
+
+[[widget.setting]]
+key = "show_type"
+type = "select"
+default = "none"
+options = [
+    { value = "none",     label = "None"      },
+    { value = "ipaddr",   label = "IP Address" },
+    { value = "hostname", label = "Hostname"   },
+]
