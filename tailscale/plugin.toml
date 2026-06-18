@@ -1,22 +1,14 @@
 
 
-id = "souvice/tailscale"
+id = "soulvice/tailscale"
 name = "Tailscale"
-version = "1.0.0"
+version = "1.0.3"
 min_noctalia = "5.0.0"
-author = "soulvice"
+author = "noctalia"
 license = "MIT"
-tags = ["tailscale" "network"]
+tags = ["tailscale", "network"]
 icon = "sheild"
 description = "A minimal Tailscale plugin that shows the current status of tailscale"
-
-[[shortcut]]
-id = "tailscale_shortcut"
-entry = "shortcut.luau"
-
-[[service]]
-id = "tailscale_service"
-entry = "service.luau"
 
 [[setting]]
 key = "poll_interval"
@@ -46,11 +38,27 @@ label = "Hide When Disconnected"
 description = "Hide bar widget when tailscale is disconnected."
 
 [[widget.setting]]
-key = "show_type"
+key = "show_label"
+type = "bool"
+label = "Show Data Label"
+default = false
+
+[[widget.setting]]
+key = "label_content"
 type = "select"
 default = "none"
+label = "Data in label to show"
+description = "What date to show in the label next to the icon."
 options = [
-    { value = "none",     label = "None"      },
     { value = "ipaddr",   label = "IP Address" },
     { value = "hostname", label = "Hostname"   },
 ]
+visible_when = { key = "show_label", values = ["true"] }
+
+[[shortcut]]
+id = "tailscale_shortcut"
+entry = "shortcut.luau"
+
+[[service]]
+id = "tailscale_service"
+entry = "service.luau"

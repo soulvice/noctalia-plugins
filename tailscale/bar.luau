@@ -13,12 +13,7 @@
 --------------------------------------------------------------------------------
 -- Module-level state
 --------------------------------------------------------------------------------
-
-local initialized   = false
-local queryPending  = false
 local icon_size     = 14
-local hideWhenOff   = false
-local showType      = "none"
 
 -- States
 local lastState     = nil
@@ -33,49 +28,32 @@ local lastExitNode  = nil
 --------------------------------------------------------------------------------
 
 local STATE_CONFIG = {
-  Initialize       = { visible = true,  glyph = "shield-off", glyphColor = "on_surface_variant",  text = "",      color = "on_surface_variant" },
-  Running          = { visible = true,  image = true,                                             text = nil,     color = "on_surface"         },
-  Starting         = { visible = true,  glyph = "shield",     glyphColor = "secondary",           text = "…",     color = "on_surface_variant" },
-  NeedsMachineAuth = { visible = true,  glyph = "shield",     glyphColor = "secondary",           text = "…",     color = "on_surface_variant" },
-  NeedsLogin       = { visible = true,  glyph = "shield-x",   glyphColor = "error",               text = noctalia.tr("bar.login"), color = "error"              },
+    Initialize       = { visible = true,  glyph = "shield-off", glyphColor = "on_surface_variant",  text = "",      color = "on_surface_variant" },
+    Running          = { visible = true,  image = true,                                             text = nil,     color = "on_surface"         },
+    Starting         = { visible = true,  glyph = "shield",     glyphColor = "secondary",           text = "…",     color = "on_surface_variant" },
+    NeedsMachineAuth = { visible = true,  glyph = "shield",     glyphColor = "secondary",           text = "…",     color = "on_surface_variant" },
+    NeedsLogin       = { visible = true,  glyph = "shield-x",   glyphColor = "error",               text = noctalia.tr("bar.login"), color = "error"              },
 }
 
 --------------------------------------------------------------------------------
 -- Helpers
 --------------------------------------------------------------------------------
 
-local function cfg(key, default)
-  return barWidget.getConfig(key, default)
+local function cfg(key)
+    return barWidget.getConfig(key)
 end
 
 local function bar_label()
-  if showType == "ipaddr"   then return lastIp       or "" end
-  if showType == "hostname" then return lastHostname or "" end
-  return ""
-end
+    local show_label = cfg("show_label")
+    local label_content = cfg("label_content")
 
-local function parseStatus(stdout)
-  local state    = stdout:match('"BackendState"%s*:%s*"([^"]+)"')
-  local ip       = stdout:match('"TailscaleIPs"%s*:%s*%[%s*"([^"]+)"')
-  local hostname = stdout:match('"Self"%s*:%s*{[^}]-"HostName"%s*:%s*"([^"]+)"')
-
-  -- Each peer has exactly one "nodekey:…" PublicKey; Self is also counted, so subtract 1.
-  local peerCount = 0
-  for _ in stdout:gmatch('"PublicKey"%s*:%s*"nodekey:[^"]+"') do
-    peerCount = peerCount + 1
-  end
-  peerCount = math.max(0, peerCount - 1)
-
-  -- Find the peer block that has "ExitNode": true and grab its HostName.
-  local exitNode = nil
-  for block in stdout:gmatch('"nodekey:[^"]+"%s*:%s*(%b{})') do
-    if block:match('"ExitNode"%s*:%s*true') then
-      exitNode = block:match('"HostName"%s*:%s*"([^"]+)"')
-      break
+    if not show_label then
+        return ""
+    else
+        if label_content == "ipaddr"   then return lastIp       or "" end
+        if label_content == "hostname" then return lastHostname or "" end
     end
-  end
-
-  return state, ip, hostname, peerCount, exitNode
+    return ""
 end
 
 --------------------------------------------------------------------------------
@@ -83,32 +61,46 @@ end
 --------------------------------------------------------------------------------
 
 function updateDisplay()
-  local s = lastState
-  local c = STATE_CONFIG[s]
+    local s = lastState
+    local c = STATE_CONFIG[s]
 
-  if not c then
-    -- Unknown / Stopped / NoState
-    barWidget.setVisible(not hideWhenOff)
-    if not hideWhenOff then
-      barWidget.setGlyph("shield-off")
-      barWidget.setGlyphColor("on_surface_variant")
-      barWidget.setText("")
-      barWidget.setColor("on_surface_variant")
-    end
+    if not c then
+        -- Unknown / Stopped / NoState
+        barWidget.setVisible(not hideWhenOff)
+        if not hideWhenOff then
+            barWidget.setGlyph("shield-off")
+            barWidget.setGlyphColor("on_surface_variant")
+            barWidget.setText("")
+            barWidget.setColor("on_surface_variant")
+        end
     return
-  end
+    end
 
-  barWidget.setVisible(c.visible)
+    barWidget.setVisible(c.visible)
 
-  if c.image then
-    barWidget.setImage("~/.config/noctalia/plugins/tailscale/icon.svg", true, icon_size)
-  else
-    barWidget.setGlyph(c.glyph)
-    barWidget.setGlyphColor(c.glyphColor)
-  end
+    if c.image then
+        barWidget.setImage("icons/tailscale.svg", true, icon_size)
+    else
+        barWidget.setGlyph(c.glyph)
+        barWidget.setGlyphColor(c.glyphColor)
+    end
 
-  barWidget.setText(c.text ~= nil and c.text or bar_label())
-  barWidget.setColor(c.color)
+    barWidget.setText(c.text ~= nil and c.text or bar_label())
+    barWidget.setColor(c.color)
+
+    -- Tooltip
+    if lastState == nil then
+        barWidget.setTooltip(noctalia.tr("tooltip.state_unknown"))
+        return
+    end
+
+    barWidget.setTooltip({
+        { key = "Tailscale",                       value = lastState               },
+        { key = noctalia.tr("tooltip.ip_address"), value = lastIp        or "—"    },
+        { key = noctalia.tr("tooltip.hostname"),   value = lastHostname  or "—"    },
+        { key = noctalia.tr("tooltip.exit_node"),  value = lastExitNode  or "Off"  },
+        { key = noctalia.tr("tooltip.peer_count"), value = lastPeerCount or "0"    },
+    })
 end
 
 
@@ -118,15 +110,7 @@ end
 --------------------------------------------------------------------------------
 
 function update()
-  if not initialized then
-    initialized = true
-    hideWhenOff = cfg("hide_when_disconnected", false)
-    showType    = cfg("show_type", "none")
-    barWidget.setUpdateInterval(cfg("poll_interval", 5000))
-    lastState = "Initialize"
     updateDisplay()
-  end
-  fetchStatus()
 end
 
 --------------------------------------------------------------------------------
@@ -134,16 +118,13 @@ end
 --------------------------------------------------------------------------------
 
 function onClick()
-  if lastState == "Running" then
-    noctalia.runAsync("${tailscaleBin} down")
-    noctalia.notify("Tailscale", noctalia.tr("toast.disconnect"))
-  elseif lastState == "Stopped" or lastState == "NoState" then
-    noctalia.runAsync("${tailscaleBin} up")
-    noctalia.notify("Tailscale", noctalia.tr("toast.connect"))
-  elseif lastState == "NeedsLogin" then
-    noctalia.runAsync("${tailscaleBin} up")
-    noctalia.notify("Tailscale", noctalia.tr("toast.need_login"))
-  end
+    if lastState == "Running" then
+        noctalia.state.set("command", { action = "disconnect" })
+    elseif lastState == "Stopped" or lastState == "NoState" then
+        noctalia.state.set("command", { action = "connect" })
+    elseif lastState == "NeedsLogin" then
+        noctalia.state.set("command", { action = "connect" })
+    end
 end
 
 --------------------------------------------------------------------------------
@@ -151,54 +132,23 @@ end
 --------------------------------------------------------------------------------
 
 function onRightClick()
-  if lastState == nil then return end
-
-  local copied = false
-  if lastIp then
-    copied = noctalia.copyToClipboard(lastIp, "text/plain")
-  end
-  local suffix = copied and `\n{noctalia.tr("toast.ip_cb")}` or ""
-
-  if lastIp and lastHostname then
-    noctalia.notify("Tailscale · " .. lastState, lastHostname .. "  " .. lastIp .. suffix)
-  elseif lastIp then
-    noctalia.notify("Tailscale · " .. lastState, lastIp .. suffix)
-  else
-    noctalia.notify("Tailscale", lastState)
-  end
-end
-
---------------------------------------------------------------------------------
--- onHover(isHovering) — tooltip
---------------------------------------------------------------------------------
-
-function onHover(isHovering)
-  if not isHovering then
-    barWidget.setTooltip("")
-    return
-  end
-
-  if lastState == nil then
-    barWidget.setTooltip(noctalia.tr("tooltip.state_unknown"))
-    return
-  end
-
-  barWidget.setTooltip({
-    { key = "Tailscale",                     value = lastState               },
-    { key = noctalia.tr("toast.ipaddr"),     value = lastIp        or "—"    },
-    { key = noctalia.tr("toast.hostname"),   value = lastHostname  or "—"    },
-    { key = noctalia.tr("toast.exit_node"),  value = lastExitNode  or "Off"  },
-    { key = noctalia.tr("toast.peer_count"), value = lastPeerCount or "0"    },
-  })
+    noctalia.state.set("command", { action = "status" })
 end
 
 
 
-local function applyStatus(cmd)
+
+local function applyStatus(status)
     local hasStatus = type(status) == "table"
 
+    lastState = if hasStatus and status.state ~= nil then status.state else ""
+    lastIp = if hasStatus and status.ip ~= nil then status.ip else ""
+    lastHostname = if hasStatus and status.hostname ~= nil then status.hostname else ""
+    lastPeerCount = if hasStatus and status.peerCount ~= nil then status.peerCount else ""
+    lastExitNode = if hasStatus and status.exit ~= nil then status.exitNode else ""
+
     -- Update Current variable states
-    updateStates();
+    update()
 end
 
 --------------------------------------------------------------------------------
