@@ -1,0 +1,34 @@
+id = "soulvice/activate_linux"
+name = "Activate Linux"
+version = "1.0.1"
+author = "soulvice"
+license = "MIT"
+icon = "puzzle"
+description = "Linux needs to be activated to use."
+min_noctalia = "5.0.0"
+tags = ["desktop", "activate"]
+
+[[desktop_widget]]
+id = "sdesktop"
+entry = "desktop.luau"
+
+[[desktop_widget.setting]]
+key = "distro"
+type = "string"
+label = "Distro"
+description = "Distro requiring activation."
+default = "NixOS"
+
+[[desktop_widget.setting]]
+key = "show_image"
+type = "bool"
+label = "Show Image"
+default = false
+
+[[desktop_widget.setting]]
+key = "image_name"
+type = "string"
+label = "Image"
+description = "Select Image to display next to text."
+default = ""
+visible_when = { key = "show_image", values = ["true"] }
