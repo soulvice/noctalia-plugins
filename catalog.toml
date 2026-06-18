@@ -1,10 +1,22 @@
+
 [[plugin]]
 id = "soulvice/tailscale"
 name = "Tailscale"
-version = "1.0.0"
+version = "1.0.3"
 author = "soulvice"
 license = "MIT"
 icon = "shield"
-description = "A minimal Tailscale plugin that shows the current status of tailscale"
+description = "A minimal Tailscale plugin that shows the current status of tailscale."
 min_noctalia = "5.0.0"
-tags = ["tailscale" "network"]
+tags = ["tailscale", "network"]
+
+[[plugin]]
+id = "soulvice/activate_linux"
+name = "Activate Linux"
+version = "1.0.1"
+author = "soulvice"
+license = "MIT"
+icon = "puzzle"
+description = "Linux needs to be activated to use."
+min_noctalia = "5.0.0"
+tags = ["desktop", "activate"]
