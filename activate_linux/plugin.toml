@@ -9,7 +9,7 @@ min_noctalia = "5.0.0"
 tags = ["desktop", "activate"]
 
 [[desktop_widget]]
-id = "sdesktop"
+id = "activate_linux"
 entry = "desktop.luau"
 
 [[desktop_widget.setting]]
