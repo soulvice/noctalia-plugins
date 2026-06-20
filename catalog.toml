@@ -7,7 +7,7 @@
 id = "soulvice/tailscale"
 name = "Tailscale"
 version = "1.0.3"
-author = "noctalia"
+author = "soulvice"
 license = "MIT"
 icon = "sheild"
 description = "A minimal Tailscale plugin that shows the current status of tailscale"
