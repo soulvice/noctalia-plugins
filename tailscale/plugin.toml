@@ -7,7 +7,7 @@ min_noctalia = "5.0.0"
 author = "soulvice"
 license = "MIT"
 tags = ["tailscale", "network"]
-icon = "sheild"
+icon = "shield"
 description = "A minimal Tailscale plugin that shows the current status of tailscale"
 
 [[setting]]

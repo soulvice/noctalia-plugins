@@ -145,7 +145,7 @@ local function applyStatus(status)
     lastIp = if hasStatus and status.ip ~= nil then status.ip else ""
     lastHostname = if hasStatus and status.hostname ~= nil then status.hostname else ""
     lastPeerCount = if hasStatus and status.peerCount ~= nil then status.peerCount else ""
-    lastExitNode = if hasStatus and status.exit ~= nil then status.exitNode else ""
+    lastExitNode = if hasStatus and status.exitNode ~= nil then status.exitNode else ""
 
     -- Update Current variable states
     update()
