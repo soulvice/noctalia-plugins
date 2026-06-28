@@ -70,9 +70,13 @@ end
 local function tailscale_up(cb)
     if queryPending then return end
     queryPending = true
-    tailscaleBin = cfg("tailscale_bin")
-    noctalia.runAsync(`{tailscaleBin} up`, function (result)
+    local tailscaleBin = cfg("tailscale_bin")
+    noctalia.runAsync(`{tailscaleBin} up 2>&1`, function (result)
         queryPending = false
+        if not result or result.exitCode ~= 0 then
+            noctalia.notifyError("Tailscale", `up failed: {result and result.stdout or "error"}`)
+            return
+        end
         cb({ state = "connected" })
     end)
 end
@@ -80,9 +84,13 @@ end
 local function tailscale_down(cb)
     if queryPending then return end
     queryPending = true
-    tailscaleBin = cfg("tailscale_bin")
-    noctalia.runAsync(`{tailscaleBin} down`, function (result)
+    local tailscaleBin = cfg("tailscale_bin")
+    noctalia.runAsync(`{tailscaleBin} down 2>&1`, function (result)
         queryPending = false
+        if not result or result.exitCode ~= 0 then
+            noctalia.notifyError("Tailscale", `down failed: {result and result.stdout or "error"}`)
+            return
+        end
         cb({ state = "disconnected" })
     end)
 end
@@ -112,7 +120,7 @@ end
 local function fetchStatus(cb)
     if queryPending then return end
     queryPending = true
-    tailscaleBin = cfg("tailscale_bin")
+    local tailscaleBin = cfg("tailscale_bin")
 
     noctalia.runAsync(`{tailscaleBin} status --json 2>/dev/null`, function(result)
         queryPending = false
@@ -146,7 +154,7 @@ end
 --------------------------------------------------------------------------------
 function onIpc(event, payload)
     if queryPending then return end
-    tailscaleBin = cfg("tailscale_bin")
+    local tailscaleBin = cfg("tailscale_bin")
 
     if event == "toggle" then
         tailscale_toggle(function (res)
